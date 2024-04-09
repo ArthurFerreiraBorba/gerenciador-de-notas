@@ -11,4 +11,8 @@ public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column (nullable = false, length = 100)
+    private String nome;
+    @Column (nullable = false, length = 100)
+    private String senha;
 }

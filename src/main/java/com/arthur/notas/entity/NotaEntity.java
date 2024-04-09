@@ -11,7 +11,9 @@ public class NotaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column (length = 100)
     private String titulo;
+    @Column (length = 1000)
     private String conteudo;
     @OneToOne
     @JoinColumn(nullable = false)
