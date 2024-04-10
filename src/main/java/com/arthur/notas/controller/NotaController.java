@@ -1,35 +1,35 @@
 package com.arthur.notas.controller;
 
-import com.arthur.notas.dto.CadernoDto;
-import com.arthur.notas.service.CadernoService;
+import com.arthur.notas.dto.NotaDto;
+import com.arthur.notas.service.NotaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping ("cadernos")
-public class CadernoController {
+@RequestMapping ("notas")
+public class NotaController {
 
-    private final CadernoService service;
+    private final NotaService service;
 
-    public CadernoController(CadernoService service) {
+    public NotaController(NotaService service) {
         this.service = service;
     }
 
     @GetMapping ("{id}")
-    public ResponseEntity<CadernoDto> buscarId(@PathVariable Long id) {
+    public ResponseEntity<NotaDto> buscarId(@PathVariable Long id) {
         return ResponseEntity.status(200).body(service.buscarId(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<CadernoDto>> buscarTodos() {
+    public ResponseEntity<List<NotaDto>> buscarTodos() {
         return ResponseEntity.status(200).body(service.buscarTodos());
     }
 
     @PostMapping
-    public ResponseEntity<CadernoDto> criar(@RequestBody CadernoDto caderno) {
-        return ResponseEntity.status(201).body(service.criar(caderno));
+    public ResponseEntity<NotaDto> criar(@RequestBody NotaDto nota) {
+        return ResponseEntity.status(201).body(service.criar(nota));
     }
 
     @DeleteMapping ("{id}")
@@ -39,8 +39,8 @@ public class CadernoController {
     }
 
     @PutMapping ("{id}")
-    public ResponseEntity<Object> atualizar(@RequestBody CadernoDto caderno, @PathVariable Long id) {
-        service.atualizar(id, caderno);
+    public ResponseEntity<Object> atualizar(@RequestBody NotaDto nota, @PathVariable Long id) {
+        service.atualizar(id, nota);
         return ResponseEntity.status(204).build();
     }
 }

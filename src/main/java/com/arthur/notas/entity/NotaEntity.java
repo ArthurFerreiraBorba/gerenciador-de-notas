@@ -1,5 +1,6 @@
 package com.arthur.notas.entity;
 
+import com.arthur.notas.dto.NotaDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,4 +22,11 @@ public class NotaEntity {
     @ManyToOne
     @JoinColumn(nullable = false)
     private UsuarioEntity usuario;
+
+    public NotaEntity (NotaDto nota) {
+        this.usuario = nota.usuario();
+        this.conteudo = nota.conteudo();
+        this.caderno = nota.caderno();
+        this.titulo = nota.titulo();
+    }
 }
