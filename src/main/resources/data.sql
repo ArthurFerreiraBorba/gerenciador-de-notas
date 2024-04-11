@@ -1,0 +1,1 @@
+INSERT INTO papeis (id, nome) VALUES (1, 'usuario') ON CONFLICT (id) DO NOTHING;

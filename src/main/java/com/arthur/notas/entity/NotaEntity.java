@@ -23,6 +23,9 @@ public class NotaEntity {
     @JoinColumn(nullable = false)
     private UsuarioEntity usuario;
 
+    public NotaEntity () {
+    }
+
     public NotaEntity (NotaDto nota) {
         this.usuario = nota.usuario();
         this.conteudo = nota.conteudo();
