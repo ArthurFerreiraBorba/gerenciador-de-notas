@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface NotaRepository extends JpaRepository<NotaEntity, Long> {
 
     @Transactional
@@ -19,4 +21,7 @@ public interface NotaRepository extends JpaRepository<NotaEntity, Long> {
             " nota.usuario = :usuario" +
             " WHERE nota.id = :id")
     void atualizar(long id, String titulo, String conteudo, CadernoEntity caderno, UsuarioEntity usuario);
+
+    @Query
+    List<NotaEntity> findAllByUsuarioId(Long idUsuario);
 }

@@ -23,13 +23,13 @@ public class NotaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NotaDto>> buscarTodos() {
-        return ResponseEntity.status(200).body(service.buscarTodos());
+    public ResponseEntity<List<NotaDto>> buscarTodos(@RequestHeader(name = "Authorization") String token) {
+        return ResponseEntity.status(200).body(service.buscarTodos(token.substring(7)));
     }
 
     @PostMapping
-    public ResponseEntity<NotaDto> criar(@RequestBody NotaDto nota) {
-        return ResponseEntity.status(201).body(service.criar(nota));
+    public ResponseEntity<NotaDto> criar(@RequestHeader(name = "Authorization") String token, @RequestBody NotaDto nota) {
+        return ResponseEntity.status(201).body(service.criar(nota, token.substring(7)));
     }
 
     @DeleteMapping ("{id}")

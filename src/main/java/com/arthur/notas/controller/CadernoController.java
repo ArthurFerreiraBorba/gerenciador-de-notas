@@ -23,13 +23,13 @@ public class CadernoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CadernoDto>> buscarTodos() {
-        return ResponseEntity.status(200).body(service.buscarTodos());
+    public ResponseEntity<List<CadernoDto>> buscarTodos(@RequestHeader(name = "Authorization") String token) {
+        return ResponseEntity.status(200).body(service.buscarTodos(token.substring(7)));
     }
 
     @PostMapping
-    public ResponseEntity<CadernoDto> criar(@RequestBody CadernoDto caderno) {
-        return ResponseEntity.status(201).body(service.criar(caderno));
+    public ResponseEntity<CadernoDto> criar(@RequestHeader(name = "Authorization") String token, @RequestBody CadernoDto caderno) {
+        return ResponseEntity.status(201).body(service.criar(caderno, token.substring(7)));
     }
 
     @DeleteMapping ("{id}")

@@ -24,8 +24,8 @@ public class UsuarioService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public UsuarioDto buscarId(Long id) {
-        UsuarioEntity usuario = repository.findById(id).orElseThrow();
+    public UsuarioDto buscarUm(Long id) {
+        UsuarioEntity usuario = buscarId(id);
         return toDto(usuario);
     }
 
@@ -64,5 +64,9 @@ public class UsuarioService {
 
     public UsuarioDto toDto (UsuarioEntity usuario) {
         return new UsuarioDto(usuario.getNome(), usuario.getSenha(), usuario.getPapel().getNome());
+    }
+
+    public UsuarioEntity buscarId(Long id) {
+        return repository.findById(id).orElseThrow();
     }
 }

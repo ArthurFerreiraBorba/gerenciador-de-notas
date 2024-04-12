@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface CadernoRepository extends JpaRepository<CadernoEntity, Long> {
 
@@ -19,4 +21,6 @@ public interface CadernoRepository extends JpaRepository<CadernoEntity, Long> {
             " WHERE caderno.id = :id")
     void atualizar(long id,  String nome, UsuarioEntity usuario);
 
+    @Query
+    public List<CadernoEntity> findAllByUsuarioId(Long idUsuario);
 }

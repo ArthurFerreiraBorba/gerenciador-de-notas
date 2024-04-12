@@ -53,7 +53,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtDecoder jwtDecoder() {
+    JwtDecoder jwtDecoder(){
         return NimbusJwtDecoder.withPublicKey(this.pub).build();
     }
 

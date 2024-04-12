@@ -2,7 +2,9 @@ package com.arthur.notas.service;
 
 import com.arthur.notas.dto.CadernoDto;
 import com.arthur.notas.entity.CadernoEntity;
+import com.arthur.notas.entity.UsuarioEntity;
 import com.arthur.notas.repository.CadernoRepository;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,13 @@ import java.util.List;
 public class CadernoService {
 
     private final CadernoRepository repository;
+    private final JwtDecoder jwtDecoder;
+    private final UsuarioService usuarioService;
 
-    public CadernoService(CadernoRepository repository) {
+    public CadernoService(CadernoRepository repository, JwtDecoder jwtDecoder, UsuarioService usuarioService) {
         this.repository = repository;
+        this.jwtDecoder = jwtDecoder;
+        this.usuarioService = usuarioService;
     }
 
     public CadernoDto buscarId(Long id) {
@@ -21,14 +27,28 @@ public class CadernoService {
         return toDto(caderno);
     }
 
-    public List<CadernoDto> buscarTodos() {
-        List<CadernoEntity> cadernos= repository.findAll();
+    public List<CadernoDto> buscarTodos(String token) {
+
+        Long idUsuario = Long.valueOf(
+                jwtDecoder.decode(token).getClaims().get("sub").toString()
+        );
+
+        List<CadernoEntity> cadernos = repository.findAllByUsuarioId(idUsuario);
+
         return cadernos.stream()
                 .map(this::toDto)
                 .toList();
     }
-    public CadernoDto criar(CadernoDto cadernoDto) {
+    public CadernoDto criar(CadernoDto cadernoDto, String token) {
+
+        Long idUsuario = Long.valueOf(
+                jwtDecoder.decode(token).getClaims().get("sub").toString()
+        );
+
+        UsuarioEntity usuario = usuarioService.buscarId(idUsuario);
+
         CadernoEntity caderno = new CadernoEntity(cadernoDto);
+        caderno.setUsuario(usuario);
         repository.save(caderno);
         return toDto(caderno);
     }

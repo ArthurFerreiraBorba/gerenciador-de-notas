@@ -1,8 +1,11 @@
 package com.arthur.notas.service;
 
 import com.arthur.notas.dto.NotaDto;
+import com.arthur.notas.entity.CadernoEntity;
 import com.arthur.notas.entity.NotaEntity;
+import com.arthur.notas.entity.UsuarioEntity;
 import com.arthur.notas.repository.NotaRepository;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +14,13 @@ import java.util.List;
 public class NotaService {
 
     private final NotaRepository repository;
+    private final JwtDecoder jwtDecoder;
+    private final UsuarioService usuarioService;
 
-    public NotaService(NotaRepository repository) {
+    public NotaService(NotaRepository repository, JwtDecoder jwtDecoder, UsuarioService usuarioService) {
         this.repository = repository;
+        this.jwtDecoder = jwtDecoder;
+        this.usuarioService = usuarioService;
     }
 
     public NotaDto buscarId(Long id) {
@@ -21,14 +28,28 @@ public class NotaService {
         return toDto(nota);
     }
 
-    public List<NotaDto> buscarTodos() {
-        List<NotaEntity> notas= repository.findAll();
+    public List<NotaDto> buscarTodos(String token) {
+
+        Long idUsuario = Long.valueOf(
+                jwtDecoder.decode(token).getClaims().get("sub").toString()
+        );
+
+        List<NotaEntity> notas = repository.findAllByUsuarioId(idUsuario);
+
         return notas.stream()
                 .map(this::toDto)
                 .toList();
     }
-    public NotaDto criar(NotaDto notaDto) {
+    public NotaDto criar(NotaDto notaDto, String token) {
+
+        Long idUsuario = Long.valueOf(
+                jwtDecoder.decode(token).getClaims().get("sub").toString()
+        );
+
+        UsuarioEntity usuario = usuarioService.buscarId(idUsuario);
+
         NotaEntity nota = new NotaEntity(notaDto);
+        nota.setUsuario(usuario);
         repository.save(nota);
         return toDto(nota);
     }

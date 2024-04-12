@@ -20,7 +20,7 @@ public class UsuarioController {
 
     @GetMapping("{id}")
     public ResponseEntity<UsuarioDto> buscarId(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(service.buscarId(id));
+        return ResponseEntity.status(200).body(service.buscarUm(id));
     }
 
     @GetMapping
